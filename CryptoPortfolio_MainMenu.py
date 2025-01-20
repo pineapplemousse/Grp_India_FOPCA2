@@ -1,3 +1,4 @@
+from Opt1_DisplayAllCurrency import opt1
 print(70*'-')
 print('     Class 02 \n     1. Kim \n     2. Chee')
 print(70*'-')
@@ -16,9 +17,8 @@ while True:
             print('Only numbers 1-7 or E allowed')
             continue
 
-'''
-if opt == 1:
-    from Opt1_DisplayAllCurrency import opt1
-elif opt == 2:
-    #blah
-'''
+
+#if opt == 1:
+#    opt1()
+#elif opt == 2:
+#blah
