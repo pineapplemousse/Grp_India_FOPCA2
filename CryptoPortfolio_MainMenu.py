@@ -11,11 +11,15 @@ while True:
     if opt.lower() == 'e':
         break
     else:
-        if int(opt) >= 1 or int(opt) <=7:
-            break
-        else:
-            print('Only numbers 1-7 or E allowed')
-            continue
+        try:
+            opt_int = int(opt)
+            if opt_int >= 1 and opt_int <= 7:
+                print('You selected option: ')
+                break
+            else:
+                print('Please enter a number between 1 and 7, or E to exit.')
+        except ValueError:
+            print('Invalid input. Please enter a number between 1-7 or E.')
 
 
 #if opt == 1:
