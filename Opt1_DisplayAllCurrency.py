@@ -3,5 +3,6 @@ def opt1():
       for data in file:
          file.readline()
       print(data)
+      #need to make list in lists
 
 opt1()
