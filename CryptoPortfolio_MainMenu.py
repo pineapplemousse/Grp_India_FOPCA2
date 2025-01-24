@@ -1,6 +1,7 @@
+from Opt1_DisplayAllCurrency import opt1
+from Opt3_AmendCurrency import opt3
 def mainmenu():
     while(True):
-        from Opt1_DisplayAllCurrency import opt1
         print(70*'-')
         print('     Class 02 \n     1. Kim \n     2. Chee')
         print(70*'-')
