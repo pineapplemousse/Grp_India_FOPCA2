@@ -7,9 +7,8 @@ def opt3():
  print("---------------------------")
  selection=input("Enter 0 to 6 for your selection or E to exit : ")
  if selection=="0" :
-
+readline
  if selection=="E" :
-    mainmenu()
  else:
    print("Invalid input.")
    opt3()
