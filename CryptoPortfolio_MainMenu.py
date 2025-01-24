@@ -1,5 +1,5 @@
 from Opt1_DisplayAllCurrency import opt1
-from Opt3_AmendCurrency import opt3
+#from Opt3_AmendCurrency import opt3
 def mainmenu():
     while(True):
         print(70*'-')
@@ -21,22 +21,24 @@ def mainmenu():
                     opt1()
                 elif opt == '2':
                     print('You selected option 2: Add Cryptocurrency')
-                    opt2()
+                    #opt2()
                 elif opt == '3':
                     print('You selected option 3: Amend Cryptocurrency')
-                    opt3()
+                    #opt3()
                 elif opt == '4':
                     print('You selected option 4: Remove Cryptocurrency')
-                    opt4()
+                    #opt4()
                 elif opt == '5':
                     print('You selected option 5: Crypto Portfolio Statement')
-                    opt5()
+                    #opt5()
                 elif opt == '6':
                     print('You selected option 6: studentfunction1')
-                    opt6()
+                    #opt6()
                 elif opt == '7':
                     print('You selected option 7: studentfunction2')
-                    opt7()
+                    #opt7()
                 
             except ValueError:
                 print('Invalid input. Please enter a number between 1-7 or E.')
+
+mainmenu()
