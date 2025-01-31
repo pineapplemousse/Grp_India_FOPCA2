@@ -11,13 +11,13 @@ def opt5():
       print("The file is empty!")
       return
     
-    data[0] = ["No"] + data[0]
-    
+    data[0] = ["No", "Name", "Market Cap", "QtyBought", "Bought Price", "Current Price"]
+
     # Create a PrettyTable instance
     table = PrettyTable()
-    
-    # Set the table's field names
-    table.field_names = data[0]  # Use the first row as headers
+
+    # Set table headers
+    table.field_names = data[0]
     
     i = 1
     # Add the remaining rows to the table
@@ -36,31 +36,32 @@ def opt5():
        TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
 
-
+        # Add invested portfolio size
     # Add invested portfolio size
     InvestedPortfolioSize = []
-    SumOfTotalInvested = 0
-    for row in data[1:]:
-       SumOfTotalInvested += float(row[4])
-    for row in data[1:]:
-       PercentageOfTotalInvested = (float(row[4]) / SumOfTotalInvested)*100
-       b = PercentageOfTotalInvested / SumOfTotalInvested
-       b = round(b, 2)
-       InvestedPortfolioSize.append(b)
+    SumOfTotalInvested = sum(TotalInvested)  #Use the Total Invested values
+
+    for invested in TotalInvested:
+        b = (invested / SumOfTotalInvested) * 100 # Calculate the percentage
+        b = round(b, 2)  # Round to 2 decimal places
+        InvestedPortfolioSize.append(b)
+
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
+
+
 
 
     # Add total current value
     TotalCurrentValue = []
     for row in data[1:]:
-       c = float(row[2])*float(row[3])
+       c = float(row[2])*float(row[4])
        TotalCurrentValue.append(c)
     table.add_column('Total Current Value', TotalCurrentValue)
 
     # Add profit / loss
     ProfitLoss = []
-    for row in data[1:]:
-        d = TotalCurrentValue - TotalInvested
+    for i in range(len(TotalCurrentValue)):
+        d = TotalCurrentValue[i] - TotalInvested[i]
         ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
 
