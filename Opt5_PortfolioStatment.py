@@ -29,45 +29,40 @@ def opt5():
     table.del_column('Market Cap')
 
     # Add total invested
-    '''
+  
     TotalInvested = []
     for row in data[1:]:
-       a = row[1]*row[2]
+       a = float(row[2])*float(row[3])
        TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
-    '''
+
 
     # Add invested portfolio size
-    '''
     InvestedPortfolioSize = []
     SumOfTotalInvested = 0
     for row in data[1:]:
-       SumOfTotalInvested += row[4]
+       SumOfTotalInvested += float(row[4])
     for row in data[1:]:
-       PercentageOfTotalInvested = (row[4] / SumOfTotalInvested)*100
+       PercentageOfTotalInvested = (float(row[4]) / SumOfTotalInvested)*100
        b = PercentageOfTotalInvested / SumOfTotalInvested
        b = round(b, 2)
        InvestedPortfolioSize.append(b)
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
-    '''
+
 
     # Add total current value
-    '''
     TotalCurrentValue = []
     for row in data[1:]:
-       c = row[1]*row[3]
+       c = float(row[2])*float(row[3])
        TotalCurrentValue.append(c)
     table.add_column('Total Current Value', TotalCurrentValue)
-    '''
 
     # Add profit / loss
-    '''
     ProfitLoss = []
     for row in data[1:]:
-        d = row[7] - row[4]
+        d = TotalCurrentValue - TotalInvested
         ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
-    '''
 
     # Add current portfolio size
     '''
