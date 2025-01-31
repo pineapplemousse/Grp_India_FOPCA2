@@ -32,19 +32,18 @@ def opt5():
   
     TotalInvested = []
     for row in data[1:]:
-       a = float(row[2])*float(row[3])
-       TotalInvested.append(a)
+      a = float(row[2])*float(row[3])
+      TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
 
-        # Add invested portfolio size
     # Add invested portfolio size
     InvestedPortfolioSize = []
     SumOfTotalInvested = sum(TotalInvested)  #Use the Total Invested values
 
     for invested in TotalInvested:
-        b = (invested / SumOfTotalInvested) * 100 # Calculate the percentage
-        b = round(b, 2)  # Round to 2 decimal places
-        InvestedPortfolioSize.append(b)
+      b = (invested / SumOfTotalInvested) * 100 # Calculate the percentage
+      b = round(b, 2)  # Round to 2 decimal places
+      InvestedPortfolioSize.append(b)
 
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
 
@@ -54,15 +53,15 @@ def opt5():
     # Add total current value
     TotalCurrentValue = []
     for row in data[1:]:
-       c = float(row[2])*float(row[4])
-       TotalCurrentValue.append(c)
+      c = float(row[2])*float(row[4])
+      TotalCurrentValue.append(c)
     table.add_column('Total Current Value', TotalCurrentValue)
 
     # Add profit / loss
     ProfitLoss = []
     for i in range(len(TotalCurrentValue)):
-        d = TotalCurrentValue[i] - TotalInvested[i]
-        ProfitLoss.append(d)
+      d = TotalCurrentValue[i] - TotalInvested[i]
+      ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
 
     # Add current portfolio size
@@ -76,9 +75,9 @@ def opt5():
     print(table)
   
   except FileNotFoundError:
-      print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
+    print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
   except Exception as e:
-      print(f"An error occurred: {e}")
+    print(f"An error occurred: {e}")
 
 # Call the function
 opt5()
