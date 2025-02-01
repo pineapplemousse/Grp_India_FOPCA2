@@ -56,9 +56,7 @@ def display_csv_as_table(file_path):
         table.field_names = headers  # Set table headers
         
         for row in reader:
-            # Convert numeric values to whole numbers if applicable
-            row[3] = int(float(row[3])) if row[3].replace('.', '', 1).isdigit() and float(row[3]).is_integer() else row[3]
-            row[4] = int(float(row[4])) if row[4].replace('.', '', 1).isdigit() and float(row[4]).is_integer() else row[4]
+
             table.add_row(row)
     
     print(table)
