@@ -32,13 +32,13 @@ def opt2():
 
     # **Fix for last-line overwrite & extra blank lines**
         # Append new entry without adding an extra blank line
-    with open(FILE_PATH, "a+", newline='') as file:
-        file.seek(0, os.SEEK_END)  # Move to the end of the file.
+    with open(FILE_PATH, "a+") as file:
+        file.seek(os.SEEK_END)  # Move to the end of the file.
         if file.tell() > 0:        # Check if the file is not empty.
             file.seek(file.tell() - 1)
             if file.read(1) != "\n":
                 file.write("\n")  # Only add a newline if needed.
-        writer = csv.writer(file, lineterminator="\n")
+        writer = csv.writer(file)
         writer.writerow([crypto_name, Marketcap, quantity, buy_in_price, market_price])
 
     
