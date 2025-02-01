@@ -11,13 +11,13 @@ def opt5():
       print("The file is empty!")
       return
     
-    data[0] = ["No", "Name", "Market Cap", "QtyBought", "Bought Price", "Current Price"]
-
+    data[0] = ["No"] + data[0]
+    
     # Create a PrettyTable instance
     table = PrettyTable()
-
-    # Set table headers
-    table.field_names = data[0]
+    
+    # Set the table's field names
+    table.field_names = data[0]  # Use the first row as headers
     
     i = 1
     # Add the remaining rows to the table
@@ -29,40 +29,45 @@ def opt5():
     table.del_column('Market Cap')
 
     # Add total invested
-  
+    '''
     TotalInvested = []
     for row in data[1:]:
-      a = float(row[2])*float(row[3])
-      TotalInvested.append(a)
+       a = row[1]*row[2]
+       TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
+    '''
 
     # Add invested portfolio size
+    '''
     InvestedPortfolioSize = []
-    SumOfTotalInvested = sum(TotalInvested)  #Use the Total Invested values
-
-    for invested in TotalInvested:
-      b = (invested / SumOfTotalInvested) * 100 # Calculate the percentage
-      b = round(b, 2)  # Round to 2 decimal places
-      InvestedPortfolioSize.append(b)
-
+    SumOfTotalInvested = 0
+    for row in data[1:]:
+       SumOfTotalInvested += row[4]
+    for row in data[1:]:
+       PercentageOfTotalInvested = (row[4] / SumOfTotalInvested)*100
+       b = PercentageOfTotalInvested / SumOfTotalInvested
+       b = round(b, 2)
+       InvestedPortfolioSize.append(b)
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
-
-
-
+    '''
 
     # Add total current value
+    '''
     TotalCurrentValue = []
     for row in data[1:]:
-      c = float(row[2])*float(row[4])
-      TotalCurrentValue.append(c)
+       c = row[1]*row[3]
+       TotalCurrentValue.append(c)
     table.add_column('Total Current Value', TotalCurrentValue)
+    '''
 
     # Add profit / loss
+    '''
     ProfitLoss = []
-    for i in range(len(TotalCurrentValue)):
-      d = TotalCurrentValue[i] - TotalInvested[i]
-      ProfitLoss.append(d)
+    for row in data[1:]:
+        d = row[6] - row[4]
+        ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
+    '''
 
     # Add current portfolio size
     '''
@@ -97,9 +102,9 @@ def opt5():
     print(table)
   
   except FileNotFoundError:
-    print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
+      print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
   except Exception as e:
-    print(f"An error occurred: {e}")
+      print(f"An error occurred: {e}")
 
 # Call the function
 opt5()
