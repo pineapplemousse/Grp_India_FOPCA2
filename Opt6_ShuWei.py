@@ -2,27 +2,6 @@ from prettytable import PrettyTable
 from forex_python.converter import CurrencyRates
 import requests
 
-def get_fallback_rate_exchangeratehost(target_currency):
-    """
-    Retrieve the USD to target_currency conversion rate from exchangerate.host.
-    """
-    try:
-        url = f"https://api.exchangerate.host/latest?base=USD&symbols={target_currency}"
-        response = requests.get(url)
-        if response.status_code != 200:
-            raise Exception(f"HTTP error: {response.status_code}")
-        data = response.json()
-        # Debug: Print data if unexpected.
-        if "rates" not in data:
-            raise Exception(f"Unexpected response structure from exchangerate.host: {data}")
-        rate = data["rates"].get(target_currency)
-        if rate is None:
-            raise Exception(f"Target currency '{target_currency}' not found in response: {data}")
-        return rate
-    except Exception as e:
-        print("Fallback rate retrieval (exchangerate.host) error:", e)
-        return None
-
 def get_fallback_rate_exchangerateapi(target_currency):
     """
     Retrieve the USD to target_currency conversion rate from exchangerate-api.com.
@@ -82,18 +61,13 @@ def opt6():
         print(f"Conversion rate from USD to {target_currency} (forex-python): {conversion_rate:.4f}\n")
     except Exception as e:
         print(f"Error retrieving conversion rate (forex-python): {e}")
-        print("Attempting fallback rate retrieval from exchangerate.host...")
-        conversion_rate = get_fallback_rate_exchangeratehost(target_currency)
+        print("Attempting fallback rate retrieval from exchangerate-api.com...")
+        conversion_rate = get_fallback_rate_exchangerateapi(target_currency)
         if conversion_rate is None:
-            print("Attempting alternative fallback rate retrieval from exchangerate-api.com...")
-            conversion_rate = get_fallback_rate_exchangerateapi(target_currency)
-            if conversion_rate is None:
-                print("Failed to retrieve conversion rate from all sources. Exiting.")
-                return
-            else:
-                print(f"Conversion rate from USD to {target_currency} (exchangerate-api): {conversion_rate:.4f}\n")
+            print("Failed to retrieve conversion rate from both sources. Exiting.")
+            return
         else:
-            print(f"Conversion rate from USD to {target_currency} (exchangerate.host): {conversion_rate:.4f}\n")
+            print(f"Conversion rate from USD to {target_currency} (exchangerate-api): {conversion_rate:.4f}\n")
     
     # Read the CSV file.
     try:
@@ -128,7 +102,6 @@ def opt6():
                 # Skip cells that cannot be converted to float.
                 continue
             try:
-                # Use the conversion_rate from earlier.
                 converted_value = conversion_rate * usd_value
                 print(f"Converted {usd_value} USD to {target_currency}: {converted_value:.2f}")
                 row[idx] = f"{converted_value:.2f}"
