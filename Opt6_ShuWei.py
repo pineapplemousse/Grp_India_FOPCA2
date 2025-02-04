@@ -10,13 +10,13 @@ def get_fallback_rate_exchangerateapi(target_currency):
         url = "https://api.exchangerate-api.com/v4/latest/USD"
         response = requests.get(url)
         if response.status_code != 200:
-            raise Exception(f"HTTP error: {response.status_code}")
+            raise Exception("HTTP error: " + str(response.status_code))
         data = response.json()
         if "rates" not in data:
-            raise Exception(f"Unexpected response structure from exchangerate-api.com: {data}")
+            raise Exception("Unexpected response structure from exchangerate-api.com: " + str(data))
         rate = data["rates"].get(target_currency)
         if rate is None:
-            raise Exception(f"Target currency '{target_currency}' not found in response: {data}")
+            raise Exception("Target currency '" + target_currency + "' not found in response: " + str(data))
         return rate
     except Exception as e:
         print("Fallback rate retrieval (exchangerate-api) error:", e)
@@ -41,8 +41,8 @@ def opt6():
     # Display the available currencies.
     print('No  -  Currency')
     print('-' * 20)
-    for key, value in currency_options.items():
-        print(f"{key}  -  {value}")
+    for key in currency_options:
+        print(str(key) + "  -  " + currency_options[key])
     
     # Ask the user to choose a currency.
     try:
@@ -58,55 +58,67 @@ def opt6():
     # First try using forex-python.
     try:
         conversion_rate = c.get_rate('USD', target_currency)
-        print(f"Conversion rate from USD to {target_currency} (forex-python): {conversion_rate:.4f}\n")
+        print("Conversion rate from USD to " + target_currency + " (forex-python): " + format(conversion_rate, ".4f"))
+        print("")
     except Exception as e:
-        print(f"Error retrieving conversion rate (forex-python): {e}")
+        print("Error retrieving conversion rate (forex-python):", e)
         print("Attempting fallback rate retrieval from exchangerate-api.com...")
         conversion_rate = get_fallback_rate_exchangerateapi(target_currency)
         if conversion_rate is None:
             print("Failed to retrieve conversion rate from both sources. Exiting.")
             return
         else:
-            print(f"Conversion rate from USD to {target_currency} (exchangerate-api): {conversion_rate:.4f}\n")
+            print("Conversion rate from USD to " + target_currency + " (exchangerate-api): " + format(conversion_rate, ".4f"))
+            print("")
     
     # Read the CSV file.
     try:
-        with open('cryptoProfile AMENDED.csv', 'r') as file:
-            # Read each nonempty line and split by commas.
-            data = [line.strip().split(',') for line in file if line.strip()]
+        file = open('cryptoProfile AMENDED.csv', 'r')
+        data = []
+        for line in file:
+            if line.strip() != "":
+                data.append(line.strip().split(','))
+        file.close()
         
-        if not data:
+        if len(data) == 0:
             print("The file is empty!")
             return
     except FileNotFoundError:
         print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
         return
     except Exception as e:
-        print(f"An error occurred while reading the CSV file: {e}")
+        print("An error occurred while reading the CSV file:", e)
         return
 
     # The first row is the header.
     header = data[0]
-    # Identify columns with "price" in their header (case-insensitive).
-    price_indices = [i for i, col in enumerate(header) if "price" in col.lower()]
-    if not price_indices:
+    # Identify columns with "price" in their header (case-insensitive) without using enumerate.
+    price_indices = []
+    i = 0
+    for col in header:
+        if "price" in col.lower():
+            price_indices.append(i)
+        i = i + 1
+
+    if len(price_indices) == 0:
         print("No price column found in the CSV file.")
         return
 
     # Convert each price from USD to the target currency.
     for row in data[1:]:
+        # Loop through each index in the list of price column positions.
         for idx in price_indices:
             try:
                 usd_value = float(row[idx])
             except ValueError:
-                # Skip cells that cannot be converted to float.
+                # Skip cells that cannot be converted to a number.
                 continue
             try:
                 converted_value = conversion_rate * usd_value
-                print(f"Converted {usd_value} USD to {target_currency}: {converted_value:.2f}")
-                row[idx] = f"{converted_value:.2f}"
+                print("Converted " + str(usd_value) + " USD to " + target_currency + ": " + format(converted_value, ".2f"))
+                row[idx] = format(converted_value, ".2f")
             except Exception as e:
-                print(f"Error converting value {row[idx]}: {e}")
+                print("Error converting value " + row[idx] + ":", e)
                 continue
 
     # Prepare and display the table with a numbering column.
@@ -114,8 +126,11 @@ def opt6():
     table = PrettyTable()
     table.field_names = header_with_no
 
-    for i, row in enumerate(data[1:], start=1):
-        table.add_row([i] + row)
+    # Manually add a row number without using enumerate.
+    row_number = 1
+    for row in data[1:]:
+        table.add_row([row_number] + row)
+        row_number = row_number + 1
     
     print("\nConverted Prices Table:")
     print(table)
