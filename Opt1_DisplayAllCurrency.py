@@ -11,6 +11,7 @@ def opt1():
       print("The file is empty!")
       return
     
+    # Add numbers at the start
     data[0] = ["No"] + data[0]
 
     # Create a PrettyTable instance
@@ -20,13 +21,10 @@ def opt1():
     table.field_names = data[0]  # Use the first row as headers
     
     # Add the remaining rows to the table
-    i = 0
-    # Add the remaining rows to the table
+    i = 1
     for row in data[1:]:
       table.add_row([i]+ row)
       i += 1
-
-    # Add numbers at the start
       
     # Print the formatted table
     print(table)
