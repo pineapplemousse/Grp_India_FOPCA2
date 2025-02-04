@@ -1,69 +1,151 @@
-# Convert crypto prices to other forms of currency
-#Copy pasted from chatGPT, needs amendment
-
 from prettytable import PrettyTable
 from forex_python.converter import CurrencyRates
+import requests
 
-# Create a CurrencyRates instance
-c = CurrencyRates()
+def get_fallback_rate_exchangeratehost(target_currency):
+    """
+    Retrieve the USD to target_currency conversion rate from exchangerate.host.
+    """
+    try:
+        url = f"https://api.exchangerate.host/latest?base=USD&symbols={target_currency}"
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise Exception(f"HTTP error: {response.status_code}")
+        data = response.json()
+        # Debug: Print data if unexpected.
+        if "rates" not in data:
+            raise Exception(f"Unexpected response structure from exchangerate.host: {data}")
+        rate = data["rates"].get(target_currency)
+        if rate is None:
+            raise Exception(f"Target currency '{target_currency}' not found in response: {data}")
+        return rate
+    except Exception as e:
+        print("Fallback rate retrieval (exchangerate.host) error:", e)
+        return None
 
-'''
-# Get exchange rate from USD to EUR
-rate = c.get_rate('USD', 'EUR')
-print(f"Exchange rate (USD to EUR): {rate}")
-
-# Convert 100 USD to EUR
-amount_in_eur = c.convert('USD', 'EUR', 100)
-print(f"100 USD in EUR: {amount_in_eur}")
-'''
+def get_fallback_rate_exchangerateapi(target_currency):
+    """
+    Retrieve the USD to target_currency conversion rate from exchangerate-api.com.
+    """
+    try:
+        url = "https://api.exchangerate-api.com/v4/latest/USD"
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise Exception(f"HTTP error: {response.status_code}")
+        data = response.json()
+        if "rates" not in data:
+            raise Exception(f"Unexpected response structure from exchangerate-api.com: {data}")
+        rate = data["rates"].get(target_currency)
+        if rate is None:
+            raise Exception(f"Target currency '{target_currency}' not found in response: {data}")
+        return rate
+    except Exception as e:
+        print("Fallback rate retrieval (exchangerate-api) error:", e)
+        return None
 
 def opt6():
+    # Create a CurrencyRates instance from forex-python.
+    c = CurrencyRates()
+    
+    # Map menu options to currency codes.
+    currency_options = {
+        0: 'SGD',  # Singapore Dollar
+        1: 'MYR',  # Malaysian Ringgit
+        2: 'INR',  # Indian Rupee
+        3: 'CNY',  # Chinese Yuan
+        4: 'JPY',  # Japanese Yen
+        5: 'GBP',  # British Pound Sterling
+        6: 'AUD',  # Australian Dollar
+        7: 'CHF'   # Swiss Franc
+    }
+    
+    # Display the available currencies.
     print('No  -  Currency')
-    print('-'*20)
-    print('0  -  Singapore Dollar\n1  -  Malaysian Ringgit\n2  -  Indian Rupee\n3  -  Chinese Yuan\n4  -  Japanese Yen\n5  -  British Pound Sterling\n6  -  Australian Dollar\n7  -  Swiss Franc')
+    print('-' * 20)
+    for key, value in currency_options.items():
+        print(f"{key}  -  {value}")
     
-    currency = input('Enter the currency you want to convert to: ')
-    rate = c.get_rate('USD', 'SGD')
+    # Ask the user to choose a currency.
     try:
-     # Open the file and read its contents
-     with open('cryptoProfile AMENDED.csv') as file:
-         data = [line.strip().split(',') for line in file]
-      
-     # Check if the file has any content
-     if not data:
-         print("The file is empty!")
-         return
-    
-     # Add numbers at the start
-     data[0] = ["No"] + data[0]
+        choice = int(input('Enter the number corresponding to the currency you want to convert to: '))
+        if choice not in currency_options:
+            print("Invalid choice!")
+            return
+        target_currency = currency_options[choice]
+    except ValueError:
+        print("Please enter a valid number!")
+        return
 
-     # Create a PrettyTable instance
-     table = PrettyTable()
-    
-     # Set the table's field names
-     table.field_names = data[0]  # Use the first row as headers
-    
-     # Add the remaining rows to the table
-     i = 1
-     for row in data[1:]:
-         table.add_row([i]+ row)
-         i += 1
-
-     # Ascertain currency
-     if currency == 0:
-         # Change currency
-         for item in data[1:]:
-             for value in item[3:]:
-                 amount_in_sgd = c.convert('USD', 'SGD', item)
-                 data[value] = amount_in_sgd
-      
-     # Print the formatted table
-     print(table)
-  
-    except FileNotFoundError:
-      print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
+    # First try using forex-python.
+    try:
+        conversion_rate = c.get_rate('USD', target_currency)
+        print(f"Conversion rate from USD to {target_currency} (forex-python): {conversion_rate:.4f}\n")
     except Exception as e:
-      print(f"An error occurred: {e}")
+        print(f"Error retrieving conversion rate (forex-python): {e}")
+        print("Attempting fallback rate retrieval from exchangerate.host...")
+        conversion_rate = get_fallback_rate_exchangeratehost(target_currency)
+        if conversion_rate is None:
+            print("Attempting alternative fallback rate retrieval from exchangerate-api.com...")
+            conversion_rate = get_fallback_rate_exchangerateapi(target_currency)
+            if conversion_rate is None:
+                print("Failed to retrieve conversion rate from all sources. Exiting.")
+                return
+            else:
+                print(f"Conversion rate from USD to {target_currency} (exchangerate-api): {conversion_rate:.4f}\n")
+        else:
+            print(f"Conversion rate from USD to {target_currency} (exchangerate.host): {conversion_rate:.4f}\n")
+    
+    # Read the CSV file.
+    try:
+        with open('cryptoProfile AMENDED.csv', 'r') as file:
+            # Read each nonempty line and split by commas.
+            data = [line.strip().split(',') for line in file if line.strip()]
+        
+        if not data:
+            print("The file is empty!")
+            return
+    except FileNotFoundError:
+        print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
+        return
+    except Exception as e:
+        print(f"An error occurred while reading the CSV file: {e}")
+        return
 
-# Call the function
+    # The first row is the header.
+    header = data[0]
+    # Identify columns with "price" in their header (case-insensitive).
+    price_indices = [i for i, col in enumerate(header) if "price" in col.lower()]
+    if not price_indices:
+        print("No price column found in the CSV file.")
+        return
+
+    # Convert each price from USD to the target currency.
+    for row in data[1:]:
+        for idx in price_indices:
+            try:
+                usd_value = float(row[idx])
+            except ValueError:
+                # Skip cells that cannot be converted to float.
+                continue
+            try:
+                # Use the conversion_rate from earlier.
+                converted_value = conversion_rate * usd_value
+                print(f"Converted {usd_value} USD to {target_currency}: {converted_value:.2f}")
+                row[idx] = f"{converted_value:.2f}"
+            except Exception as e:
+                print(f"Error converting value {row[idx]}: {e}")
+                continue
+
+    # Prepare and display the table with a numbering column.
+    header_with_no = ["No"] + header
+    table = PrettyTable()
+    table.field_names = header_with_no
+
+    for i, row in enumerate(data[1:], start=1):
+        table.add_row([i] + row)
+    
+    print("\nConverted Prices Table:")
+    print(table)
+
+# Call the function.
 opt6()
