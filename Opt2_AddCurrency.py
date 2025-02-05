@@ -32,7 +32,7 @@ def opt2():
 
     # **Fix for last-line overwrite & extra blank lines**
         # Append new entry without adding an extra blank line
-    with open(FILE_PATH, "a+") as file:
+    with open(FILE_PATH, "a+") as file:                    #append and read
         file.seek(os.SEEK_END)  # Move to the end of the file.
         if file.tell() > 0:        # Check if the file is not empty.
             file.seek(file.tell() - 1)
