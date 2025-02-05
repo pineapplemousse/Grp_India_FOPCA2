@@ -64,8 +64,8 @@ def opt5():
       ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
 
+ # Add current portfolio size
     '''
-    
     CurrentPortfolioSize = []
     SumOfTotalCurrentValue = 0
     for row in data[1:]:

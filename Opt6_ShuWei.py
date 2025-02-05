@@ -8,18 +8,11 @@ def get_conversion_rate(target_currency):
     try:
         url = "https://api.exchangerate-api.com/v4/latest/USD"
         response = requests.get(url)
-        if response.status_code != 200:
-            raise Exception("HTTP error: " + str(response.status_code))
         data = response.json()
-        if "rates" not in data:
-            raise Exception("Unexpected response structure: " + str(data))
         rate = data["rates"].get(target_currency)
-        if rate is None:
-            raise Exception("Target currency '" + target_currency + "' not found in response: " + str(data))
         return rate
     except Exception as e:
         print("Error retrieving conversion rate from exchangerate-api:", e)
-        return None
 
 def opt6():
     # Map menu options to currency codes.
@@ -53,57 +46,32 @@ def opt6():
 
     # Get the conversion rate using exchangerate-api.
     conversion_rate = get_conversion_rate(target_currency)
-    if conversion_rate is None:
+    if conversion_rate == 0:
         print("Failed to retrieve conversion rate. Exiting.")
         return
 
     # Read the CSV file.
-    try:
-        file = open("cryptoProfile AMENDED.csv", "r")
-        data = []
-        for line in file:
-            if line.strip() != "":
-                data.append(line.strip().split(","))
-        file.close()
+   
+    file = open("cryptoProfile AMENDED.csv", "r")
+    data = []
+    for line in file:
+        if line.strip() != "":
+            data.append(line.strip().split(","))
+    file.close()
+    
+    if len(data) == 0:
+        print("The file is empty!")
+        return
         
-        if len(data) == 0:
-            print("The file is empty!")
-            return
-    except FileNotFoundError:
-        print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
-        return
-    except Exception as e:
-        print("An error occurred while reading the CSV file:", e)
-        return
-
     # The first row is the header.
     header = data[0]
-    # Identify columns with "price" in their header (case-insensitive) using a simple counter.
-    price_indices = []
-    i = 0
-    for col in header:
-        if "price" in col.lower():
-            price_indices.append(i)
-        i = i + 1
-
-    if len(price_indices) == 0:
-        print("No price column found in the CSV file.")
-        return
 
     # Convert each price from USD to the target currency.
     for row in data[1:]:
-        for idx in price_indices:
-            try:
-                usd_value = float(row[idx])
-            except ValueError:
-                # Skip cells that cannot be converted to a number.
-                continue
-            try:
-                converted_value = conversion_rate * usd_value
-                row[idx] = format(converted_value, ".2f")
-            except Exception as e:
-                print("Error converting value " + row[idx] + ":", e)
-                continue
+        for idx in row[3:]:
+            usd_value = float(row[idx])
+            converted_value = conversion_rate * usd_value
+            row[idx] = round(converted_value, 2)
 
     # Prepare and display the table with a numbering column.
     header_with_no = ["No"] + header
