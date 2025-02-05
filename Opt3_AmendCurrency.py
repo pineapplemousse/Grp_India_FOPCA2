@@ -4,7 +4,7 @@ def opt3():
  while True:
   with open(FILE_PATH,"a+") as file:
    for row in FILE_PATH:  # 'row' represents a list of values in one line
-      print(row[0])  # Access first column
+      print(row[15])  # Access first column
      
   
 
