@@ -33,7 +33,6 @@ def opt5():
     TotalInvested = []
     for row in data[1:]:
       a = float(row[2])*float(row[3])
-      a = (f'{a}%')
       TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
 
@@ -44,6 +43,7 @@ def opt5():
     for invested in TotalInvested:
       b = (invested / SumOfTotalInvested) * 100 # Calculate the percentage
       b = round(b, 2)  # Round to 2 decimal places
+      b = (f'{b}%')
       InvestedPortfolioSize.append(b)
 
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
@@ -68,6 +68,7 @@ def opt5():
     for value in TotalCurrentValue:
       PercentageOfTotalCurrentValue = (value / SumOfTotalCurrentValue)*100
       e = round(PercentageOfTotalCurrentValue, 2)
+      e = (f'{e}%')
       CurrentPortfolioSize.append(e)
     table.add_column('Current Portfolio Size', CurrentPortfolioSize)
     

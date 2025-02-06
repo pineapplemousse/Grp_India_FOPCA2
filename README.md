@@ -3,3 +3,8 @@
 
 Libraries Used:
 PrettyTables
+
+Modules used:
+csv
+os
+requests
