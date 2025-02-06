@@ -47,9 +47,15 @@ def opt7():
     plt.title(f"{chosen_column} for each Currency")
     
     # Optionally, add numeric labels above each bar
+    # Find the maximum value in the list of values to determine the position for labels
     max_val = max(values) if values else 1
+    
+    # Iterate over each bar in the bar chart
     for bar in bars:
+        # Get the height of the current bar
         yval = bar.get_height()
+        
+        # Add a text label above the bar with the value it represents
         plt.text(bar.get_x() + bar.get_width() / 2, yval + 0.02 * max_val, f'{yval}', ha='center', va='bottom')
     
     plt.tight_layout()
