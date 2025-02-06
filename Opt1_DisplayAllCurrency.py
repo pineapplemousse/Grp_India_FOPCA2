@@ -2,31 +2,31 @@ from prettytable import PrettyTable
 
 def opt1():
   try:
-    # Open the file and read its contents
+    
     with open('cryptoProfile AMENDED.csv') as file:
       data = [line.strip().split(',') for line in file]
       
-    # Check if the file has any content
+    
     if data == 0:
       print("The file is empty!")
       return
     
-    # Add numbers at the start
+    
     data[0] = ["No"] + data[0]
 
-    # Create a PrettyTable instance
+    
     table = PrettyTable()
     
-    # Set the table's field names
-    table.field_names = data[0]  # Use the first row as headers
     
-    # Add the remaining rows to the table
+    table.field_names = data[0]  
+    
+    
     i = 1
     for row in data[1:]:
       table.add_row([i]+ row)
       i += 1
       
-    # Print the formatted table
+    
     print(table)
   
   except Exception as e:

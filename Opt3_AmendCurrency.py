@@ -1,9 +1,9 @@
 import csv
 
 def opt3():
-    file_path = "cryptoProfile AMENDED.csv"  # Ensure the correct path to your CSV
+    file_path = "cryptoProfile AMENDED.csv"  
 
-    # Read the CSV file into a header and data rows (2D list)
+    
     with open(file_path, mode='r', newline='') as file:
         reader = csv.reader(file)
         all_rows = list(reader)
@@ -15,7 +15,7 @@ def opt3():
     header = all_rows[0]
     data = all_rows[1:]
 
-    # Get the indexes for each required column for convenience
+    
     
     name_idx = header.index("Name")
     market_cap_idx = header.index("Market Cap")
@@ -27,7 +27,7 @@ def opt3():
         print("-----------------------------------------------")
         print("No - CryptoCurrency")
         print("---------------------------")
-        # List all cryptocurrencies by their Name field using range() instead of enumerate
+        
         for i in range(len(data)):
             print(f"{i} - {data[i][name_idx]}")
         print("---------------------------")
@@ -55,7 +55,7 @@ def opt3():
                 if field_selection.lower() == "e":
                     break
                 elif field_selection in ["1", "2", "3", "4", "5"]:
-                    # Map the selection to the corresponding header field.
+                    
                     field_map = {
                         "1": "Name",
                         "2": "Market Cap",
@@ -65,20 +65,20 @@ def opt3():
                     }
                     field_name = field_map[field_selection]
 
-                    # Determine the column index for the field.
+                    
                     col_idx = header.index(field_name)
 
                     new_value = input(f"Enter new {field_name}: ")
 
-                    # Validate numeric input for specific fields.
+                    
                     if field_name in ["Quantity", "Buy In Price", "Market Price"]:
                         if not new_value.isdigit():
                             print("Invalid input. Please enter a numeric value.")
                             continue
-                        # Convert to integer and back to string if desired.
+                        
                         new_value = str(int(new_value))
 
-                    # Update the value in our 2D list.
+                    
                     data[index][col_idx] = new_value
                     print(f"Updated {field_name} to {new_value}\n")
                 else:
@@ -86,7 +86,7 @@ def opt3():
         else:
             print("Invalid input. Please enter a valid selection.")
 
-    # Write the updated header and data rows back to the CSV file.
+    
     with open(file_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)

@@ -16,25 +16,25 @@ def get_conversion_rate(target_currency):
 
 def opt6():
     while True:
-        # Map menu options to currency codes.
+        
         currency_options = {
-            0: 'SGD',  # Singapore Dollar
-            1: 'MYR',  # Malaysian Ringgit
-            2: 'INR',  # Indian Rupee
-            3: 'CNY',  # Chinese Yuan
-            4: 'JPY',  # Japanese Yen
-            5: 'GBP',  # British Pound Sterling
-            6: 'AUD',  # Australian Dollar
-            7: 'CHF'   # Swiss Franc
+            0: 'SGD',  
+            1: 'MYR',  
+            2: 'INR',  
+            3: 'CNY',  
+            4: 'JPY',  
+            5: 'GBP',  
+            6: 'AUD',  
+            7: 'CHF'   
         }
         
-        # Display the available currencies.
+        
         print("No  -  Currency")
         print("-" * 20)
         for key in currency_options:
             print(str(key) + "  -  " + currency_options[key])
         
-    # Ask the user to choose a currency.
+    
         choice = input("Enter the number corresponding to the currency you want to convert to, or press 'E' to exit: ")
         if choice.lower() == 'e':
             break
@@ -45,13 +45,13 @@ def opt6():
         target_currency = currency_options[choice]
 
 
-        # Get the conversion rate using exchangerate-api.
+        
         conversion_rate = get_conversion_rate(target_currency)
         if conversion_rate == 0:
             print("Failed to retrieve conversion rate.")
             return
 
-        # Read the CSV file.
+        
         with open('cryptoProfile AMENDED.csv') as file:
             data = [line.strip().split(',') for line in file]
         
@@ -59,17 +59,17 @@ def opt6():
             print("The file is empty!")
             return
             
-        # The first row is the header.
+        
         data[0] = ["No"] + data[0]
 
-        # Convert each price from USD to the target currency.
+        
         for row in data[1:]:
             for i in range(3, len(row)):
                 usd_value = float(row[i])
                 converted_value = conversion_rate * usd_value
                 row[i] = round(converted_value, 2)
 
-        # Prepare and display the table with a numbering column.
+        
         table = PrettyTable()
         table.field_names = data[0]
         

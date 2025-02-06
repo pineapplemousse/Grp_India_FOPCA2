@@ -2,10 +2,10 @@ import csv
 import os
 from prettytable import PrettyTable
 
-FILE_PATH = "cryptoProfile AMENDED.csv"  # Ensure this file exists in your directory
+FILE_PATH = "cryptoProfile AMENDED.csv"  
 
 def opt2():
-    # Collect input from the user.
+    
     while True:
         print("-----------------------------------------------")        
         crypto_name = input("Enter Cryptocurrency Name: ")
@@ -17,11 +17,11 @@ def opt2():
                 buy_in_price = float(input("Enter Buy In Price of Crypto = "))
                 market_price = float(input("Enter Market Price of Crypto = "))
 
-                # Convert to whole number if it has no decimal part.
+                
                 buy_in_price = int(buy_in_price) if buy_in_price.is_integer() else buy_in_price
                 market_price = int(market_price) if market_price.is_integer() else market_price
                 
-                break  # Exit loop after valid input.
+                break  
             except ValueError:
                 print("Invalid price input. Please enter a valid number.")
         else:
@@ -29,14 +29,14 @@ def opt2():
     
     print("-----------------------------------------------")
 
-    # Append the new entry without adding extra blank lines.
-    # Open the file with newline='' to prevent the CSV writer from inserting extra blank lines.
+    
+    
     with open(FILE_PATH, "a+", newline='') as file:
-        file.seek(0, os.SEEK_END)  # Move to the end of the file.
-        if file.tell() > 0:  # Check if the file is not empty.
+        file.seek(0, os.SEEK_END)  
+        if file.tell() > 0:  
             file.seek(file.tell() - 1)
             last_char = file.read(1)
             if last_char != "\n":
-                file.write("\n")  # Add a newline only if needed.
+                file.write("\n")  
         writer = csv.writer(file)
         writer.writerow([crypto_name, Marketcap, quantity, buy_in_price, market_price])
