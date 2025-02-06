@@ -33,6 +33,7 @@ def opt5():
     TotalInvested = []
     for row in data[1:]:
       a = float(row[2])*float(row[3])
+      a = (f'{a}%')
       TotalInvested.append(a)
     table.add_column('Total Invested', TotalInvested)
 
@@ -47,9 +48,6 @@ def opt5():
 
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
 
-
-
-
     # Add total current value
     TotalCurrentValue = []
     for row in data[1:]:
@@ -63,35 +61,27 @@ def opt5():
       d = TotalCurrentValue[i] - TotalInvested[i]
       ProfitLoss.append(d)
     table.add_column('Profit/Loss', ProfitLoss)
-
- # Add current portfolio size
-    '''
+    
+    # Add current portfolio size
     CurrentPortfolioSize = []
-    SumOfTotalCurrentValue = 0
-    for row in data[1:]:
-       SumOfTotalCurrentValue += row[6]
-    for row in data[1:]:
-       PercentageOfTotalCurrentValue = (row[6] / SumOfTotalCurrentValue)*100
-       e = PercentageOfTotalCurrentValue / SumOfTotalCurrentValue
-       e = round(b, 2)
-       CurrentPortfolioSize.append(e)
+    SumOfTotalCurrentValue = sum(TotalCurrentValue)
+    for value in TotalCurrentValue:
+      PercentageOfTotalCurrentValue = (value / SumOfTotalCurrentValue)*100
+      e = round(PercentageOfTotalCurrentValue, 2)
+      CurrentPortfolioSize.append(e)
     table.add_column('Current Portfolio Size', CurrentPortfolioSize)
-    '''
+    
 
     # Add sum row
-    '''
-    SumRow = ['Sum'] + ['-']*8
+    SumRow = ['Sum'] + ['-']*9
 
-    SumOfProfitLoss = 0
-    for row in data[1:]:
-       SumOfProfitLoss += row[7]
+    SumOfProfitLoss = sum(ProfitLoss)
       
-    SumRow[4] = SumOfTotalInvested
-    SumRow[6] = SumOfTotalCurrentValue
-    SumRow[7] = SumOfProfitLoss
+    SumRow[5] = SumOfTotalInvested
+    SumRow[7] = SumOfTotalCurrentValue
+    SumRow[8] = SumOfProfitLoss
 
-    table.add_row()
-    '''
+    table.add_row(SumRow)
 
     # Print the formatted table
     print(table)
