@@ -40,21 +40,3 @@ def opt2():
                 file.write("\n")  # Add a newline only if needed.
         writer = csv.writer(file)
         writer.writerow([crypto_name, Marketcap, quantity, buy_in_price, market_price])
-    
-    # Display the updated CSV as a table.
-    display_csv_as_table(FILE_PATH)
-
-def display_csv_as_table(file_path):
-    """Reads a CSV file and prints it as a formatted table."""
-    table = PrettyTable()
-
-    # Open the file with newline='' to ensure proper CSV parsing.
-    with open(file_path, "r", newline='') as file:
-        reader = csv.reader(file)
-        headers = next(reader)  # Read first row as headers.
-        table.field_names = headers  # Set table headers.
-        
-        for row in reader:
-            table.add_row(row)
-    
-    print(table)
