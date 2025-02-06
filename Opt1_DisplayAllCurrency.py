@@ -7,7 +7,7 @@ def opt1():
       data = [line.strip().split(',') for line in file]
       
     # Check if the file has any content
-    if not data:
+    if data == 0:
       print("The file is empty!")
       return
     
@@ -29,7 +29,5 @@ def opt1():
     # Print the formatted table
     print(table)
   
-  except FileNotFoundError:
-      print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
   except Exception as e:
       print(f"An error occurred: {e}")
