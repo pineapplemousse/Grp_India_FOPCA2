@@ -36,11 +36,7 @@ def opt7():
     values = []
     for row in data:
         names.append(row["Name"])
-        try:
-            value = float(row[chosen_column])
-        except ValueError:
-            print(f"Warning: Could not convert '{row[chosen_column]}' for {row['Name']} to a number. Using 0 instead.")
-            value = 0
+        value = float(row[chosen_column])
         values.append(value)
 
     # Plot a bar chart using Matplotlib
@@ -57,7 +53,4 @@ def opt7():
         plt.text(bar.get_x() + bar.get_width() / 2, yval + 0.02 * max_val, f'{yval}', ha='center', va='bottom')
     
     plt.tight_layout()
-    plt.show()
-
-if __name__ == "__main__":
-    opt7()
+    plt.show() #print picture

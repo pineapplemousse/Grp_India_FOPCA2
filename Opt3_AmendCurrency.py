@@ -93,6 +93,3 @@ def opt3():
         writer.writerows(data)
 
     print("Changes saved successfully!")
-
-# Call the function
-opt3()

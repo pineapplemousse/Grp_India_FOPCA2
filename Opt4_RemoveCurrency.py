@@ -67,5 +67,3 @@ def opt4():
     file.close()
     
     print("The file has been updated.")
-
-opt4()
