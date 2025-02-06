@@ -26,9 +26,9 @@ def opt7():
         print(f" - {col}")
 
     # Prompt user to choose a column to plot
-    chosen_column = input("Enter the column name you want to plot: ").strip()
+    chosen_column = input("Enter the column name you want to plot: ")
     if chosen_column not in valid_numeric_columns:
-        print(f"Invalid column. Please choose one of: {', '.join(valid_numeric_columns)}")
+        print(f"Invalid column. Please type either Quantity, Buy In Price, or Market Price.")
         return
 
     # Extract currency names and the corresponding numeric values from the chosen column

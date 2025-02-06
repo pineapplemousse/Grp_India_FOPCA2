@@ -3,8 +3,12 @@
 
 Libraries Used:
 PrettyTables
+matplotlib
 
 Modules used:
 csv
 os
 requests
+
+API:
+https://api.exchangerate-api.com/v4/latest/USD
