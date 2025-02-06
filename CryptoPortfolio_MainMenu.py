@@ -5,7 +5,7 @@ from Opt3_AmendCurrency import opt3
 from Opt5_PortfolioStatment import opt5
 from Opt6_ShuWei import opt6
 #from Opt7_Lohith import opt7
-#from Opt3_AmendCurrency import opt3
+
 def mainmenu():
     while(True):
         print(70*'-')
@@ -13,7 +13,7 @@ def mainmenu():
         print(70*'-')
         print('     Cryptocurrency Portfolio Application Main Menu')
         print(70*'-')
-        print('1. Display Cryptocurrency\n2. Add Cryptocurrency\n3. Amend Cryptocurrency\n4. Remove Cryptocurrency\n5. Crypto Portfolio Statement\n6. studentfunction1\n7. studentfunction2\nE. Exit Main Menu')
+        print('1. Display Cryptocurrency\n2. Add Cryptocurrency\n3. Amend Cryptocurrency\n4. Remove Cryptocurrency\n5. Crypto Portfolio Statement\n6. Convert Currency (Shu Wei)\n7. Comparison Graph (Lohith)\nE. Exit Main Menu')
         print(70*'-')
 
         opt = str(input('Select an option: '))
@@ -41,7 +41,7 @@ def mainmenu():
                     print('You selected option 6: Convert Currency (Shu Wei)')
                     opt6()
                 elif opt == '7':
-                    print('You selected option 7: studentfunction2')
+                    print('You selected option 7: Comparison Graph (Lohith)')
                     #opt7()
                 
             except ValueError:

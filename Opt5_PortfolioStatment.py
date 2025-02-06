@@ -7,7 +7,7 @@ def opt5():
       data = [line.strip().split(',') for line in file]
       
     # Check if the file has any content
-    if not data:
+    if data == 0:
       print("The file is empty!")
       return
     
@@ -28,8 +28,8 @@ def opt5():
     # Remove market cap
     table.del_column('Market Cap')
 
+    # From here to Sum row, lists are added as columns
     # Add total invested
-  
     TotalInvested = []
     for row in data[1:]:
       a = float(row[2])*float(row[3])
@@ -45,7 +45,6 @@ def opt5():
       b = round(b, 2)  # Round to 2 decimal places
       b = (f'{b}%')
       InvestedPortfolioSize.append(b)
-
     table.add_column('Invested Portfolio Size', InvestedPortfolioSize)
 
     # Add total current value

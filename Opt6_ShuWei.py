@@ -48,24 +48,19 @@ def opt6():
         # Get the conversion rate using exchangerate-api.
         conversion_rate = get_conversion_rate(target_currency)
         if conversion_rate == 0:
-            print("Failed to retrieve conversion rate. Exiting.")
+            print("Failed to retrieve conversion rate.")
             return
 
         # Read the CSV file.
-    
-        file = open("cryptoProfile AMENDED.csv", "r")
-        data = []
-        for line in file:
-            if line.strip() != "":
-                data.append(line.strip().split(","))
-        file.close()
+        with open('cryptoProfile AMENDED.csv') as file:
+            data = [line.strip().split(',') for line in file]
         
         if len(data) == 0:
             print("The file is empty!")
             return
             
         # The first row is the header.
-        header = data[0]
+        data[0] = ["No"] + data[0]
 
         # Convert each price from USD to the target currency.
         for row in data[1:]:
@@ -75,9 +70,13 @@ def opt6():
                 row[i] = round(converted_value, 2)
 
         # Prepare and display the table with a numbering column.
-        header_with_no = ["No"] + header
         table = PrettyTable()
-        table.field_names = header_with_no
+        table.field_names = data[0]
+        
+        i = 1
+        for row in data[1:]:
+           table.add_row([i]+ row)
+           i += 1
 
         row_number = 1
         for row in data[1:]:
@@ -86,4 +85,3 @@ def opt6():
         
         print("\nConverted Prices Table:")
         print(table)
-
