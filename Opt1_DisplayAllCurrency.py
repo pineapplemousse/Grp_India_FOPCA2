@@ -33,6 +33,3 @@ def opt1():
       print("Error: The file 'cryptoProfile AMENDED.csv' was not found.")
   except Exception as e:
       print(f"An error occurred: {e}")
-
-# Call the function
-opt1()

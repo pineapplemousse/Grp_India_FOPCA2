@@ -93,4 +93,3 @@ def opt5():
     print(f"An error occurred: {e}")
 
 # Call the function
-opt5()

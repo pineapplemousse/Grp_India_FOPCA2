@@ -87,5 +87,3 @@ def opt6():
         print("\nConverted Prices Table:")
         print(table)
 
-# Call the function.
-opt6()

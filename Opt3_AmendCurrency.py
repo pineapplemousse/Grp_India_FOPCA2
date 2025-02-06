@@ -13,11 +13,3 @@ def opt3():
   
 
   
- 
-
-
-
-
-
-# Call the function
-opt3()
