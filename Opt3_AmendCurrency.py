@@ -2,9 +2,13 @@ import csv
 FILE_PATH = "cryptoProfile AMENDED.csv"  # Ensure this file exists in your directory
 def opt3():
  while True:
-  with open(FILE_PATH,"a+") as file:
-   for row in FILE_PATH:  # 'row' represents a list of values in one line
-      print(row[15])  # Access first column
+  print("No - CryptoCurrency")
+  print("---------------------------")
+  print("0 - Bitcoin\n1 - Etherum\n2 -Solana\n3 - Decentraland\n4 - The Sandbox\n5 - Dodgecoin\n6 - Shiba Inu")
+  print("---------------------------")
+  selection=input("Enter 0 to 6 for your selection or E to exit : ").strip()
+  print(f"Index                : {selection}")
+
      
   
 
